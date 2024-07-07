@@ -5,6 +5,7 @@ import { winstonLogger } from '@crunchydeer30/microservices-course-shared';
 import { config } from '@notifications/config';
 import { Application } from 'express';
 import healthCheck from '@notifications/routes';
+import { connect as connectElasticSearch } from '@notifications/elasticsearch';
 
 const logger: Logger = winstonLogger(`${config.ELASTIC_URL}`, 'notificationsServer', 'debug');
 
@@ -19,8 +20,8 @@ async function startQueues(): Promise<void> {
 
 }
 
-function startElasticSearch(): void {
-
+async function startElasticSearch(): Promise<void> {
+  await connectElasticSearch();
 }
 
 function startServer(app: Application): void {
