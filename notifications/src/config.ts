@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 dotenv.config({});
 
 class Config {
+  public PORT: number | undefined;
   public NODE_ENV: string | undefined;
   public CLIENT_URL: string | undefined;
   public RABBIT_MQ_ENDPOINT: string | undefined;
@@ -11,6 +12,7 @@ class Config {
   public ELASTIC_URL: string | undefined;
 
   constructor() {
+    this.PORT = Number(process.env.PORT);
     this.NODE_ENV = process.env.NODE_ENV;
     this.CLIENT_URL = process.env.CLIENT_URL;
     this.RABBIT_MQ_ENDPOINT = process.env.RABBIT_MQ_ENDPOINT;
