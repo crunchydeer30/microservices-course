@@ -6,7 +6,7 @@
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
     "lib": ["DOM", "esnext"],
-    "module": "esnext",
+    "module": "commonjs",
     "baseUrl": ".",
     "moduleResolution": "node",
     "noEmitOnError": true,
@@ -30,6 +30,6 @@
       "@notifications/*": ["src/*"]
     }
   },
-  "include": [ "src"],
+  "include": ["src"],
   "exclude": ["node_modules"]
 }
