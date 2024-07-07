@@ -4,11 +4,13 @@ import { Logger } from 'winston';
 import { winstonLogger } from '@crunchydeer30/microservices-course-shared';
 import { config } from '@notifications/config';
 import { Application } from 'express';
+import healthCheck from '@notifications/routes';
 
 const logger: Logger = winstonLogger(`${config.ELASTIC_URL}`, 'notificationsServer', 'debug');
 
 export function start(app: Application): void {
   startServer(app);
+  app.use('', healthCheck);
   startQueues();
   startElasticSearch();
 }
