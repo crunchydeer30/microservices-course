@@ -1,4 +1,9 @@
 import { start } from '@notifications/server';
-import express from 'express';
-const app = express();
-start(app);
+import express, { Express } from 'express';
+
+function init(): void {
+  const app: Express = express();
+  start(app);
+}
+
+init();

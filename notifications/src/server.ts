@@ -1,11 +1,13 @@
 import 'express-async-errors';
 import * as http from 'node:http';
+
 import { Logger } from 'winston';
 import { winstonLogger } from '@crunchydeer30/microservices-course-shared';
 import { config } from '@notifications/config';
 import { Application } from 'express';
 import healthCheck from '@notifications/routes';
 import { connect as connectElasticSearch } from '@notifications/elasticsearch';
+import { createConnection } from '@notifications/queues/connection';
 
 const logger: Logger = winstonLogger(`${config.ELASTIC_URL}`, 'notificationsServer', 'debug');
 
@@ -17,7 +19,7 @@ export function start(app: Application): void {
 }
 
 async function startQueues(): Promise<void> {
-
+  await createConnection();
 }
 
 async function startElasticSearch(): Promise<void> {
@@ -31,7 +33,7 @@ function startServer(app: Application): void {
     httpServer.listen(config.PORT, () => {
       logger.log('info', `Notification Service listening on port ${config.PORT}`);
     });
-  } catch(e) {
-    logger.log('error', 'Notification Service startSever(): ' + e);
+  } catch (e) {
+    logger.log('error', `Notification Service startSever(): ${e}`);
   }
 }
