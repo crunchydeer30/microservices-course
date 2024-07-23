@@ -1,7 +1,9 @@
 import { Channel, ConsumeMessage } from 'amqplib';
-import { winstonLogger } from '@crunchydeer30/microservices-course-shared';
+import { IEmailLocals, winstonLogger } from '@crunchydeer30/microservices-course-shared';
 import { config } from '@notifications/config';
 import { createConnection } from '@notifications/queues/connection';
+
+import { sendEmail } from './mail.transport';
 
 const logger = winstonLogger(`${config.ELASTIC_URL}`, 'notificationsQueueConnection', 'debug');
 
@@ -17,6 +19,15 @@ export async function consumeAuthEmailMessages(channel: Channel): Promise<void> 
     const { queue } = await channel.assertQueue(queueName, { durable: true, autoDelete: false });
     await channel.bindQueue(queue, exchangeName, routingKey);
     await channel.consume(queue, async (msg: ConsumeMessage | null) => {
+      const { receiverEmail, username, verifyLink, resetLink, template } = JSON.parse(msg!.content.toString());
+      const locals: IEmailLocals = {
+        appLink: `${config.CLIENT_URL}`,
+        appIcon: 'https://i.ibb.co/Kyp2m0t/cover.png',
+        username,
+        verifyLink,
+        resetLink,
+      };
+      await sendEmail(template, receiverEmail, locals);
       console.log(JSON.parse(msg!.content.toString() as string));
       channel.ack(msg!);
     });
