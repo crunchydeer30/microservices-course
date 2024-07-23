@@ -9,9 +9,7 @@ import healthCheck from '@notifications/routes';
 import { connect as connectElasticSearch } from '@notifications/elasticsearch';
 import { createConnection } from '@notifications/queues/connection';
 import { Channel } from 'amqplib';
-import { consumeAuthEmailMessages } from '@notifications/queues/email.consumer';
-
-import { consumeOrderEmailMessages } from './queues/order.consumer';
+import { consumeAuthEmailMessages, consumeOrderEmailMessages } from '@notifications/queues/email.consumer';
 
 const logger: Logger = winstonLogger(`${config.ELASTIC_URL}`, 'notificationsServer', 'debug');
 
