@@ -12,7 +12,7 @@ export async function consumeAuthEmailMessages(channel: Channel): Promise<void> 
     if (!channel) {
       channel = (await createConnection()) as Channel;
     }
-    const exchangeName = 'email-notification';
+    const exchangeName = 'auth-notifications';
     const routingKey = 'auth-email';
     const queueName = 'auth-email-queue';
     await channel.assertExchange(exchangeName, 'direct');
@@ -41,7 +41,7 @@ export async function consumeOrderEmailMessages(channel: Channel): Promise<void>
     if (!channel) {
       channel = (await createConnection()) as Channel;
     }
-    const exchangeName = 'order-notification';
+    const exchangeName = 'order-notifications';
     const routingKey = 'order-email';
     const queueName = 'order-email-queue';
     await channel.assertExchange(exchangeName, 'direct');
