@@ -10,6 +10,7 @@ import { StatusCodes } from 'http-status-codes';
 import * as http from 'node:http';
 import * as process from 'node:process';
 import { config } from '@gateway/config';
+import { elasticSearch } from '@gateway/elasticsearch';
 
 const PORT = 8000;
 const logger: Logger = winstonLogger(config.ELASTIC_URL as string, 'apiGatewayServer', 'debug');
@@ -27,6 +28,7 @@ export class GatewayServer {
     this.routesMiddleware(this.app);
     this.errorHandler(this.app);
     void this.startServer(this.app);
+    void this.startElasticSearch();
   }
 
   private securityMiddleware(app: Application): void {
@@ -58,7 +60,9 @@ export class GatewayServer {
 
   private routesMiddleware(_app: Application): void {}
 
-  private startElasticSearch(): void {}
+  private async startElasticSearch(): Promise<void> {
+    await elasticSearch.checkConnection();
+  }
 
   private errorHandler(app: Application): void {
     app.use('*', (req: Request, res: Response, _next: NextFunction) => {
