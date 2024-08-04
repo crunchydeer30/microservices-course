@@ -11,6 +11,7 @@ import * as http from 'node:http';
 import * as process from 'node:process';
 import { config } from '@gateway/config';
 import { elasticSearch } from '@gateway/elasticsearch';
+import { appRoutes } from '@gateway/routes';
 
 const PORT = 8000;
 const logger: Logger = winstonLogger(config.ELASTIC_URL as string, 'apiGatewayServer', 'debug');
@@ -58,7 +59,9 @@ export class GatewayServer {
     app.use(urlencoded({ extended: true, limit: '10kb' }));
   }
 
-  private routesMiddleware(_app: Application): void {}
+  private routesMiddleware(app: Application): void {
+    appRoutes(app);
+  }
 
   private async startElasticSearch(): Promise<void> {
     await elasticSearch.checkConnection();
@@ -67,9 +70,9 @@ export class GatewayServer {
   private errorHandler(app: Application): void {
     app.use('*', (req: Request, res: Response, _next: NextFunction) => {
       const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
-      logger.log('error', `url: ${fullUrl} endpoint does not exists.`);
+      logger.log('error', `url: ${fullUrl} endpoint does not exist`);
       res.status(StatusCodes.NOT_FOUND).json({
-        message: 'endpoint does not exists',
+        message: 'The endpoint does not exists',
       });
     });
 
@@ -79,7 +82,7 @@ export class GatewayServer {
         return res.status(error.statusCode).json(error.serializeErrors());
       }
       res.status(StatusCodes.NOT_FOUND).json({
-        message: 'The endpoint does not exists',
+        message: 'The endpoint does not exist',
       });
     });
   }
