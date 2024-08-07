@@ -22,6 +22,7 @@
     "@crunchydeer30/microservices-course-shared": "^1.0.0",
     "@elastic/elasticsearch": "^8.14.0",
     "@types/compression": "^1.7.5",
+    "@types/jsonwebtoken": "^9.0.6",
     "axios": "^1.7.3",
     "bcrypt": "^5.1.1",
     "compression": "^1.7.4",
