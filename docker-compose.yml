@@ -19,10 +19,12 @@ services:
   mysql:
     container_name: mysql_container
     image: mysql
-    command: --default-authentication-plugin=mysql_native_password
+#    command: mysqld --initialize-insecure
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: jobber_auth
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: auth
     ports:
       - 3306:3306
     volumes:
